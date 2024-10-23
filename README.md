@@ -37,34 +37,34 @@ between users, detecting cycles, and managing a list of transactions for each us
 In this file some basic functions are beeing developed for the Graph creation and managment,
 Quering, Analysis, Utility
 
-> Graph* createGraph();
-> Node* addNode(Graph* graph, const char* userID);
-> Node* findNode(Graph* graph, const char* userID);
-> void addEdge(Graph* graph, const char* source, const char* destination,double amount,const char* date);
-> void deleteNode(Graph* graph, const char* userID);
-> void deleteEdge(Graph* graph, const char* source, const char* destination);
-> void modifyEdge(Graph* graph,const char* source,const char* destination,double old_amount,
+- Graph* createGraph();
+- Node* addNode(Graph* graph, const char* userID);
+- Node* findNode(Graph* graph, const char* userID);
+- void addEdge(Graph* graph, const char* source, const char* destination,double amount,const char* date);
+- void deleteNode(Graph* graph, const char* userID);
+- void deleteEdge(Graph* graph, const char* source, const char* destination);
+- void modifyEdge(Graph* graph,const char* source,const char* destination,double old_amount,
                                 double new_amount,const char* old_date,const char* new_date);
-> void findOutgoingEdges(Graph* graph, const char* userID);
-> void findIncomingEdges(Graph* graph, const char* destination);
-> void findPath(Graph* graph, const char* source,const char* destination);
-> void Circlesfind(Graph* graph, const char* node);
-> void findCircles(Graph* graph,const char* node, double);
-> void traceFlow(Graph* graph, const char* node, int length);
-> void printGraph(Graph* graph);
-> void freeGraph(Graph* graph);
+- void findOutgoingEdges(Graph* graph, const char* userID);
+- void findIncomingEdges(Graph* graph, const char* destination);
+- void findPath(Graph* graph, const char* source,const char* destination);
+- void Circlesfind(Graph* graph, const char* node);
+- void findCircles(Graph* graph,const char* node, double);
+- void traceFlow(Graph* graph, const char* node, int length);
+- void printGraph(Graph* graph);
+- void freeGraph(Graph* graph);
 
 - Also some helping functions that are not declared in the .h file:
 
-> DFS : A DFS function to find a path between two nodes (Users)
+- DFS : A DFS function to find a path between two nodes (Users)
                 used in findPath()
-> Circles_dfs : DFS to detect circles from given node 
+- Circles_dfs : DFS to detect circles from given node 
                 used in Circlesfind()
-> printCircle : Func that prints a circle given a path matrix
+- printCircle : Func that prints a circle given a path matrix
                 used in Circles_dfs , findCircles
-> Circles_mod_dfs : Find circles of transactions with a minimum
+- Circles_mod_dfs : Find circles of transactions with a minimum
                     amount of money in it. Used in dindCircles
-> traceFlowUtility : A util function that trace the flow of money 
+- traceFlowUtility : A util function that trace the flow of money 
                     transactions until a certain depth. 
                     Used is traceflow
 
