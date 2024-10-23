@@ -367,19 +367,19 @@ bool Circles_dfs(Graph* graph, const char* start, const char* current, bool* vis
         currentEdge = currentEdge->next;
     }
 
-    stack[currentHashIndex] = false;
+    stack[currentHashIndex] = false;    // Remove current node from stack when backtracking
     (*pathIndex)--;  // Remove current node from path when backtracking
     return false;
 }
 
 
 
-// Function to handle 'circlefind Ni' command (uses dfs)
-void Circlesfind(Graph* graph, const char* Ni) {
+// Function to handle 'circlefind / c ' command
+void Circlesfind(Graph* graph, const char* currentNode) {
     // Find if node Ni exists
-    Node* startNode = findNode(graph, Ni);
+    Node* startNode = findNode(graph, currentNode);
     if (startNode == NULL) {
-        printf("Non-existing node: %s\n", Ni);
+        printf("Non-existing node: %s\n", currentNode);
         return;
     }
 
@@ -396,7 +396,7 @@ void Circlesfind(Graph* graph, const char* Ni) {
     }
 
     // Perform DFS to find cycles
-    Circles_dfs(graph, Ni, Ni, visited, stack, path, &pathIndex, &foundCircle);
+    Circles_dfs(graph, currentNode, currentNode , visited, stack, path, &pathIndex, &foundCircle);
 
     if (!foundCircle) {
         printf("(none)\n");
@@ -418,7 +418,7 @@ bool Circles_mod_dfs(Graph* graph, const char* start,const char* current, bool* 
     unsigned long index = hash(current);
     int currentHashIndex = index % graph->hash_size;
 
-     visited[currentHashIndex] = true;
+    visited[currentHashIndex] = true;
     stack[currentHashIndex] = true;
     path[(*pathIndex)++] = strdup(current);  // Add current node to the path
 
@@ -432,7 +432,7 @@ bool Circles_mod_dfs(Graph* graph, const char* start,const char* current, bool* 
         int nextHashIndex = hash(currentEdge->destination) % graph->hash_size;
         
         // Only proceed if the amount is at least the threshold
-        if (currentEdge->amount >= amountThreshold) {
+        if (currentEdge->amount >= amountThreshold) {   // Check if the amount is greater than the threshold (The difference between this and the previous DFS function)
 
             if (*minAmountInCircle == 0.0 || *minAmountInCircle > currentEdge->amount) {
                 *minAmountInCircle = currentEdge->amount;  // Update minimum amount in circle
@@ -455,7 +455,7 @@ bool Circles_mod_dfs(Graph* graph, const char* start,const char* current, bool* 
         currentEdge = currentEdge->next;
     }
 
-    stack[currentHashIndex] = false;
+    stack[currentHashIndex] = false;    // Remove current node from stack when backtracking
     (*pathIndex)--;  // Remove current node from path when backtracking
     return false;
 }
@@ -476,7 +476,7 @@ void findCircles(Graph* graph,const char* node, double amount){
     char** path = malloc(graph->hash_size * sizeof(char*));
     int pathIndex = 0;
     bool foundCircle = false;
-    double minAmountInCircle = DBL_MAX;
+    double minAmountInCircle = DBL_MAX; // Initialize to maximum double value
 
     // Initialize visited and stack arrays
     for (int i = 0; i < graph->hash_size; i++) {
@@ -505,7 +505,7 @@ void findCircles(Graph* graph,const char* node, double amount){
     free(stack);
 }
 
-// 
+// Recursive utility function to trace flow of transactions
 void traceFlowUtility(Graph* graph, const char* node, bool* visited, char** path, int* pathIndex, int length){
     // Check if the maximum path length is reached
     if (*pathIndex >= length) {
@@ -531,7 +531,7 @@ void traceFlowUtility(Graph* graph, const char* node, bool* visited, char** path
     Node* currentNode = findNode(graph, node);
     Edge* edge = currentNode->edges;
 
-    // Explore each outgoing edge
+    // Explore every outgoing edge
     while (edge != NULL) {
         // If the destination node has not been visited, continue the path
         if (!visited[hash(edge->destination) % graph->hash_size]) {
@@ -545,7 +545,7 @@ void traceFlowUtility(Graph* graph, const char* node, bool* visited, char** path
     (*pathIndex)--;  // Decrease the path index when backtracking
 }
 
-//  
+//  Function to trace flow of transactions up to a given length
 void traceFlow(Graph* graph, const char* source, int length){
     // Find the starting node
     Node* start = findNode(graph, source);

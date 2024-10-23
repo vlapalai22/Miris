@@ -1,8 +1,8 @@
 #include "dir_multi_graph.h"
 
 
-void readInputFile(char *file_input,Graph* graph){
-    FILE* file = fopen(file_input, "r");
+void readInputFile(char *input_file,Graph* graph){
+    FILE* file = fopen(input_file, "r");
     if (file == NULL) {
         perror("Error opening file");
         return;
@@ -14,7 +14,7 @@ void readInputFile(char *file_input,Graph* graph){
     char date[DATE_LENGTH];
 
     // Read each line of the file
-    while (fscanf(file, "%s %s %lf %s", source, destination, &amount, date) == 4) {
+    while (fscanf(file, "%s %s %lf %s", source, destination, &amount, date) == 4) { // Checks if exactly 4 items were successfully read and assigned
         addEdge(graph, source, destination, amount, date);
     }
 
