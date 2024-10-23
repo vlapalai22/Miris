@@ -19,11 +19,12 @@ between users, detecting cycles, and managing a list of transactions for each us
     - destination[userId_length] : Stores the Destination (UserID) of the transaction
     - amount : Stores the amount of money of the transaction
     - date[Date_length] : Stores the date of the transaction (12 digits <YYYY-MM-DD>)
+    - next : Stores the Edge that was prior at the source node
 
 - Node:
     - UserID[userId_length] : Stores the ID of the user as string (7 digits: <AAAAAAA>/<0000000>)
     - edges : Stores the edges of each user as a linked list
-    - next : Store the next user in the hash table
+    - next : In case of collisions store the other node(s) as a linked list
 
 - Graph:
     - numNodes : Number of Users

@@ -12,8 +12,6 @@ int hash(const char *str) {
         // Update hash and keep it within the int range
         hash = ((hash << 5) + hash + c); // hash * 33 + c
     }
-
-    //printf("Hashing done. Integer hash value = %d\n", hash);
     return hash % HASH_SIZE;
 }
 
@@ -40,9 +38,9 @@ Node* addNode(Graph* graph, const char* UserId){
     memCount += sizeof(Node);
     strcpy(newNode->UserID, UserId);
     newNode->edges = NULL;
-    newNode->next = graph->nodes[hash_index];
+    newNode->next = graph->nodes[hash_index];   // Seperate chaining method to deal with collisions set the new node as the head of the linked list
 
-    graph->nodes[hash_index] = newNode;
+    graph->nodes[hash_index] = newNode; // Add the new node to the hash table and if there is a collision replace the head of the linked list with the new node
     graph->numNodes++;
     return newNode;
 }
@@ -53,8 +51,8 @@ Node* findNode(Graph* graph, const char* node){
     int hash_index = index % graph->hash_size;
 
     Node* currentNode = graph->nodes[hash_index];
-    while(currentNode != NULL){                         // Find the source of the edge
-        if(strcmp(currentNode->UserID, node) == 0){
+    while(currentNode != NULL){                         // Traverse the linked list to find the node
+        if(strcmp(currentNode->UserID, node) == 0){     // If the node is found return it
             break;
         }
         currentNode = currentNode->next;
