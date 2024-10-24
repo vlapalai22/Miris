@@ -19,7 +19,7 @@ run:
 
 # Run the program with valgrind to check for memory leaks
 leaks:
-	valgrind --leak-check=full ./$(TARGET) `input.txt` `output.txt`
+	valgrind --leak-check=full ./$(TARGET) -i `input.txt` -o `output.txt`
 
 clean:
 	rm -f *.o $(TARGET)

@@ -5,25 +5,30 @@ void readInputFile(char *input_file,Graph* graph){
     FILE* file = fopen(input_file, "r");
     if (file == NULL) {
         perror("Error opening file");
-        return;
+        exit(1);
     }
 
-    char source[USER_ID_LENGTH];
-    char destination[USER_ID_LENGTH];
-    double amount;
-    char date[DATE_LENGTH];
 
-    // Read each line of the file
-    while (fscanf(file, "%s %s %lf %s", source, destination, &amount, date) == 4) { // Checks if exactly 4 items were successfully read and assigned
-        addEdge(graph, source, destination, amount, date);
+    char line[256];
+    while (fgets(line, sizeof(line), file)) {
+        char* source = strtok(line, " \n");      
+        char* destination = strtok(NULL, " \n"); 
+        char* tmp_amount = strtok(NULL, " \n");  
+        char* date = strtok(NULL, " \n");        
+
+        if (source != NULL && destination != NULL && tmp_amount != NULL && date != NULL) {
+            double amount = atof(tmp_amount);   // Convert string to double
+            addEdge(graph, source, destination, amount, date);
+        } else {
+            printf("File format error: <source> <destination> <amount> <date>\n");
+        }
     }
-
     fclose(file);
     return;
 }
 
 
-void WriteOutputFile(Graph * graph, char* file_output){
+void WriteOutputFile(char* file_output, Graph * graph){
     FILE* file = fopen(file_output, "w");
     if (file == NULL) {
         printf("Error opening file\n");
@@ -223,22 +228,26 @@ void execute_commands(Graph* graph){
 
 int main(int argc,char* argv[]){
 
-    if(argc < 2){
-        printf("Not proper call of the program!\n <file.exe> <input.txt> <out.txt>\n");
-        return(1);
-    }
-    Graph* graph = createGraph();
+    char * input_file;
+    char * output_file;
 
-    readInputFile(argv[1],graph);
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-i") == 0 && i + 1 < argc) {
+            input_file = argv[++i];
+        } 
+        else if (strcmp(argv[i], "-o") == 0 && i + 1 < argc) {
+            output_file = argv[++i]; 
+        } 
+        else {
+            printf("Not proper call of the program!\n <file.exe>  -i <input.txt> -o <out.txt>\n");
+            return (1);
+        }
+    }
+
+    Graph* graph = createGraph();
+    readInputFile(input_file,graph);
     execute_commands(graph);
-    if(argc < 3){   // If no output file is provided write to output.txt
-        char* file_output = "output.txt";
-        WriteOutputFile(graph,file_output);
-    }
-    else{
-        WriteOutputFile(graph,argv[2]);
-    }
-    
+   
     printf("%lld Bytes released\n",memCount);
     freeGraph(graph);
 
