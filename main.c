@@ -231,23 +231,27 @@ int main(int argc,char* argv[]){
     char * input_file;
     char * output_file;
 
-    for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "-i") == 0 && i + 1 < argc) {
-            input_file = argv[++i];
-        } 
-        else if (strcmp(argv[i], "-o") == 0 && i + 1 < argc) {
-            output_file = argv[++i]; 
-        } 
-        else {
-            printf("Not proper call of the program!\n <file.exe>  -i <input.txt> -o <out.txt>\n");
-            return (1);
-        }
+    if(argc < 5){
+        printf("Not proper call of the program!\n <file.exe>  -i <input.txt> -o <out.txt>\n");
+        return (1);
     }
-
+    if(strcmp(argv[1], "-i") == 0 && strcmp(argv[3], "-o") == 0){
+        input_file = argv[2];
+        output_file = argv[4];
+    }
+    else if(strcmp(argv[1], "-o") == 0 && strcmp(argv[3], "-i") == 0){
+        input_file = argv[4];
+        output_file = argv[2];
+    }
+    else{
+        printf("Not proper call of the program!\n <file.exe>  -i <input.txt> -o <out.txt>\n");
+        return (1);
+    }
+    
     Graph* graph = createGraph();
     readInputFile(input_file,graph);
     execute_commands(graph);
-   
+    WriteOutputFile(output_file, graph);    
     printf("%lld Bytes released\n",memCount);
     freeGraph(graph);
 

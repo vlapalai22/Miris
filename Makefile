@@ -15,7 +15,7 @@ dir_multi_graph.o: dir_multi_graph.c dir_multi_graph.h
 
 
 run:  
-	./$(TARGET) `input.txt` `output.txt`
+	./$(TARGET) -i `input.txt` -o `output.txt`
 
 # Run the program with valgrind to check for memory leaks
 leaks:

@@ -83,12 +83,12 @@ and write to an output file.
 
 1) Use Makefile:
     - make all : compiles the program
-    - make run : runs program (make changes at: /Makefile line 18 ./$(TARGET) `input.txt` `output.txt`)
+    - make run : runs program (make changes at: /Makefile line 18 ./$(TARGET) `-i` `input.txt` `-o` `output.txt`)
     - make leaks : runs with valgrind (make changes at: /Makefile line 22 
-                                        valgrind --leak-check=full ./$(TARGET) `input.txt` `output.txt`)
+                                        valgrind --leak-check=full ./$(TARGET) `-i` `input.txt` `-o` `output.txt`)
     - make clean : removes .o & .exe files 
 
 2) Use gcc compiler through terminal:
     - gcc -c main.c dir_multi_graph.c
     - gcc main.o dir_multi_graph.o -o miris
-    - ./miris `input.txt` `output.txt`
+    - ./miris `-i` `input.txt` `-o` `output.txt`
